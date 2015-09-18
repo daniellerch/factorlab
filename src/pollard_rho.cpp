@@ -2,7 +2,7 @@
 /*
    Pollard Rho Factorization method.
 
-   Algorithm 5.2.1 in Prime Numbers, a Computational Perspective, 2ed. 
+   Algorithm 5.2.1 in "Prime Numbers, a Computational Perspective", 2ed. 
    R. Crandall, C. Pomerance.
 */
 
@@ -10,6 +10,7 @@
 
 inline NTL::ZZ F(NTL::ZZ &x, NTL::ZZ &a, long k, NTL::ZZ &n)
 {
+   // f(x) = x^2k + a (mod n)
    return NTL::AddMod(NTL::PowerMod(x, k, n), a, n);
 }
 

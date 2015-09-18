@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 
-#include <NTL_extension.hpp>
+#include <factorlib.hpp>
 #include <polynomial_selection.hpp>
 
 
@@ -46,7 +46,7 @@ void GNFS::polynomial_selection(GNFS::Polynomial &polynomial, Target &target)
    polynomial.f = get_base_m_expansion(polynomial.d, polynomial.m, target.n);
   
    // f(x) reducible?
-   if(NTL_extension::ZZX_is_reducible(polynomial.f, target.n))
+   if(FL::ZZX_is_reducible(polynomial.f, target.n))
    {
       std::cout << "\tf(x) is reducible: " << polynomial.f << std::endl;
       exit(1);

@@ -16,12 +16,12 @@ NTL::RR Newton(GNFS::Polynomial &polynomial, NTL::RR start)
    x0 = 0;
    x1 = start;
 
-	while(NTL_extension::ZZX_evaluate(polynomial.f, x1) > error)
+	while(FL::ZZX_evaluate(polynomial.f, x1) > error)
 	{
       x0 = x1;
 
-      y0=NTL_extension::ZZX_evaluate(polynomial.f, x0);
-      yp=NTL_extension::ZZX_evaluate(NTL::diff(polynomial.f), x0);
+      y0=FL::ZZX_evaluate(polynomial.f, x0);
+      yp=FL::ZZX_evaluate(NTL::diff(polynomial.f), x0);
       x1=x0-y0/yp;
    }
 
@@ -288,10 +288,10 @@ void square_root(GNFS::Polynomial &polynomial, GNFS::Target &target, Matrix &mat
       std::cout << dF_temp << std::endl;
 
       /*
-      ZZ dF_temp2 = NTL_extension::ZZX_evaluate(polynomial.f, polynomial.m);
+      ZZ dF_temp2 = FL::ZZX_evaluate(polynomial.f, polynomial.m);
       std::cout << dF_temp2 << std::endl;
 
-      ZZ dF_temp3 = NTL_extension::ZZX_evaluate(NTL::diff(polynomial.f), polynomial.m);
+      ZZ dF_temp3 = FL::ZZX_evaluate(NTL::diff(polynomial.f), polynomial.m);
       std::cout << dF_temp3 << std::endl;
       */
 

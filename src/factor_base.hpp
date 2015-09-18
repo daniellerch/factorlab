@@ -6,7 +6,7 @@
 #include <iostream>
 #include <fstream>
 
-#include <NTL_extension.hpp>
+#include <factorlib.hpp>
 #include <gnfs.hpp>
 #include <polynomial_selection.hpp>
 
@@ -97,7 +97,7 @@ double prime_logarithm(std::vector <int> &FB, int bound, int p, NTL::ZZ n)
          for(int j = 0; j < p && count < polynomial.d; j++)
          {
             jZ = j;
-            if(NTL_extension::ZZX_evaluate(polynomial.f, jZ) % pZ == 0)
+            if(FL::ZZX_evaluate(polynomial.f, jZ) % pZ == 0)
             {
                count++;
                AFB.push_back(p);
@@ -135,7 +135,7 @@ double prime_logarithm(std::vector <int> &FB, int bound, int p, NTL::ZZ n)
          {
             jZ = j;
 
-            if(NTL_extension::ZZX_evaluate(polynomial.f, jZ) % pZ == 0)
+            if(FL::ZZX_evaluate(polynomial.f, jZ) % pZ == 0)
             {
                QCB.push_back(p);
                QCBs.push_back(j);

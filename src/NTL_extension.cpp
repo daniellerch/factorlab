@@ -2,11 +2,11 @@
 #include <iostream>
 #include <fstream>
 #include <polynomial_selection.hpp>
-#include <NTL_extension.hpp>
+#include <factorlib.hpp>
 
 
-// {{{ NTL_extension::ZZX_is_reducible()
-bool NTL_extension::ZZX_is_reducible(NTL::ZZX &f, NTL::ZZ &n)
+// {{{ FL::ZZX_is_reducible()
+bool FL::ZZX_is_reducible(NTL::ZZX &f, NTL::ZZ &n)
 {
    NTL::ZZ div, root, val, product;
 
@@ -17,13 +17,13 @@ bool NTL_extension::ZZX_is_reducible(NTL::ZZX &f, NTL::ZZ &n)
       {
          val = div;
          product = 1;
-         product *= NTL_extension::ZZX_evaluate(f, val);
+         product *= FL::ZZX_evaluate(f, val);
          val = 0 - div;
-         product *= NTL_extension::ZZX_evaluate(f, val);
+         product *= FL::ZZX_evaluate(f, val);
          val = n / div;
-         product *= NTL_extension::ZZX_evaluate(f, val);
+         product *= FL::ZZX_evaluate(f, val);
          val = 0 - (n / div);
-         product *= NTL_extension::ZZX_evaluate(f, val);
+         product *= FL::ZZX_evaluate(f, val);
          if(product == 0)
          {
             return true;
@@ -34,9 +34,9 @@ bool NTL_extension::ZZX_is_reducible(NTL::ZZX &f, NTL::ZZ &n)
 }
 // }}}
 
-// {{{ NTL_extension::ZZX_evaluate()
+// {{{ FL::ZZX_evaluate()
 // Polynomial function
-NTL::ZZ NTL_extension::ZZX_evaluate(const NTL::ZZX &f, NTL::ZZ &x)
+NTL::ZZ FL::ZZX_evaluate(const NTL::ZZX &f, NTL::ZZ &x)
 {
    NTL::ZZ temp;
 
@@ -48,8 +48,8 @@ NTL::ZZ NTL_extension::ZZX_evaluate(const NTL::ZZX &f, NTL::ZZ &x)
 }
 // }}}
 
-// {{{ NTL_extension::ZZX_evaluate()
-NTL::RR NTL_extension::ZZX_evaluate(const NTL::ZZX &f, NTL::RR &x)
+// {{{ FL::ZZX_evaluate()
+NTL::RR FL::ZZX_evaluate(const NTL::ZZX &f, NTL::RR &x)
 {
    NTL::RR temp;
 
