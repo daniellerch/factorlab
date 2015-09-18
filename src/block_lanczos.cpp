@@ -106,7 +106,6 @@ void reduce_matrix(uint32_t extra_rels, uint32_t *nrows, uint32_t *ncols, la_col
 
 	/* count the number of nonzero entries in each row */
 
-printf("--1--\n");
 	counts = (uint32_t *)calloc((size_t)*nrows, sizeof(uint32_t));
 	//for (i = 0; i < *ncols; i++) {
 	for (i = 0; i < *nrows; i++) {
@@ -115,7 +114,6 @@ printf("--1--\n");
 			counts[cols[i].data[j]]++;
       }
 	}
-printf("--2--\n");
 
 	reduced_rows = *nrows;
 	reduced_cols = *ncols;
