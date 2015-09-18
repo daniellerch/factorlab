@@ -4,6 +4,13 @@
 
 #include <NTL/ZZ.h>
 
-NTL::ZZ pollard_rho(NTL::ZZ &n, long k=2);
+namespace FL
+{
+
+   /* Factorization algorithms */
+
+   NTL::ZZ pollard_rho(NTL::ZZ &n, long k=2);
+
+}
 
 #endif

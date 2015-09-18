@@ -13,7 +13,7 @@ inline NTL::ZZ F(NTL::ZZ &x, NTL::ZZ &a, long k, NTL::ZZ &n)
    return NTL::AddMod(NTL::PowerMod(x, k, n), a, n);
 }
 
-NTL::ZZ pollard_rho(NTL::ZZ &n, long k)
+NTL::ZZ FL::pollard_rho(NTL::ZZ &n, long k)
 {   
    // Usually we use k=2 with complexity c*sqrt(p) but it is an established 
    // heuristic that the expected number of iterations can be reduced from 

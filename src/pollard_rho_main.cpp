@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
          break;
       }
 
-      NTL::ZZ factor = pollard_rho(n, k);
+      NTL::ZZ factor = FL::pollard_rho(n, k);
 
       std::cout << "Factor: " << factor << std::endl;
       n = n/factor;
