@@ -24,19 +24,15 @@ int main(int argc, char *argv[])
 
    std::cout << "Factoring " << n << " ..." << std::endl;
 
-   for(;;)
+   if(NTL::ProbPrime(n, 10))
    {
-      if(NTL::ProbPrime(n, 10))
-      {
-         std::cout << "Factor: " << n << std::endl;
-         break;
-      }
-
-      NTL::ZZ factor = FL::pollard_rho(n, k);
-
-      std::cout << "Factor: " << factor << std::endl;
-      n = n/factor;
+      std::cout << "Prime: " << n << std::endl;
+      return 0;
    }
+
+   NTL::ZZ factor = FL::pollard_rho(n, k);
+
+   std::cout << "Factor: " << factor << std::endl;
 
    return 0;
 }

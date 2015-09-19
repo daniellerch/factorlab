@@ -29,49 +29,60 @@
 #include <vector>
 #include <factorlib.hpp>
 
-class base_item
+NTL::ZZ F1(NTL::ZZ &x, NTL::ZZ &n)
 {
-   public:
-   NTL::ZZ p;
-   unsigned long a;
-};
+   // f(x) = ((x^2 - 85)^2 - 4176)^2 - 2880^2
 
-// {{{ FL::pollard_pm1()
-NTL::ZZ FL::pollard_pm1(NTL::ZZ &n, NTL::ZZ &B)
-{ 
-   std::vector<base_item> base;
-   NTL::ZZ k;
-   NTL::ZZ c;
-   NTL::ZZ g;
-   NTL::ZZ p = NTL::to_ZZ(2);
+   NTL::ZZ fx;
+   fx = NTL::PowerMod(NTL::PowerMod(x, 2, n) - 85, 2, n);
+   fx = NTL::PowerMod(fx - 4176, 2, n);
+   fx = fx - 8294400;
 
-   // Establish prime-power base
-   while(p<B)
+   return fx;
+}
+
+NTL::ZZ F2(NTL::ZZ &x, NTL::ZZ &n)
+{
+   // f(x) = (((x^2 - 67405)^2 - 3525798096)^2 -  533470702551552000)^2 - 469208209191321600^2
+
+   NTL::ZZ fx;
+   fx = NTL::PowerMod(NTL::PowerMod(x, 2, n) - 67405, 2, n);
+   fx = NTL::PowerMod(fx - 3525798096, 2, n);
+   fx = NTL::PowerMod(fx - 533470702551552000, 2, n);
+   fx = fx - NTL::to_ZZ("220156343572527011594632754626560000");
+
+   return fx;
+}
+
+
+NTL::ZZ F(NTL::ZZ &x, NTL::ZZ &n)
+{
+   NTL::ZZ r = NTL::to_ZZ(1);
+
+   for(long i=0; i<100; i++)
+      r *= x - i;
+
+   return r;
+}
+
+// {{{ FL::polynomial_evaluacion()
+NTL::ZZ FL::polynomial_evaluation(NTL::ZZ &n)
+{
+   NTL::ZZ g; 
+   NTL::ZZ x; 
+
+   unsigned long cnt=0;
+   for(;;)
    {
-      long a=0;
-      k=p;
-      while(k<B)
-      {
-         k*=p;
-         a++;
-      }
+      cnt++;
+      x = NTL::RandomBnd(n);
+      g = NTL::GCD( F(x, n), n);
 
-      base_item item;
-      item.p = p;
-      item.a = a;
-      base.push_back(item);
-
-      p = NTL::NextPrime(p+1);
+      if(g>1 && g<n)
+         break;
    }
-
-   // Perform power ladders
-   c = 2;
-   for(unsigned long i=0; i<base.size(); i++)
-      for(unsigned long j=0; j<base[i].a; j++)
-         c = NTL::PowerMod(c, base[i].p, n);
    
-   // Test gcd
-   g = NTL::GCD(c-1, n);
+   std::cout << "Iterations: " << cnt << std::endl;
 
    return g;
 }

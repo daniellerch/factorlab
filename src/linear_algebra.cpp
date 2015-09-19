@@ -41,8 +41,10 @@ void linear_algebra(GNFS::Polynomial &polynomial, GNFS::Target &target,
    int k;
    int u = polynomial.d*target.t;
 
+//#define LANCZOS 
+#ifdef LANCZOS
    uint64_t *nullrows;
-   uint32_t extra_rels = 64; // number of opportunities to factor n 
+   uint32_t extra_rels = 0; // number of opportunities to factor n 
    uint32_t ncols, nrows;
 
    ncols = matrix.col;
@@ -50,6 +52,8 @@ void linear_algebra(GNFS::Polynomial &polynomial, GNFS::Target &target,
 
    printf("=>%u\n", nrows);
    la_col_t *M = create_matrix(nrows);
+
+#endif
 
    // Initialize sM
    for(j = 0; j <= matrix.row-1; j++)
@@ -66,8 +70,10 @@ void linear_algebra(GNFS::Polynomial &polynomial, GNFS::Target &target,
       {
          valZ *= -1;
          matrix.sM[0][j] = 1;
-            
+      
+#ifdef LANCZOS      
          insert_col_entry(&M[0], j);
+#endif
       }
 
       // Set a RFB row 
@@ -77,8 +83,9 @@ void linear_algebra(GNFS::Polynomial &polynomial, GNFS::Target &target,
          pZ = fb.RFB[i];
          if(valZ % pZ == 0)
          {
+#ifdef LANCZOS      
             if(matrix.sM[1+i][j]==0) insert_col_entry(&M[1+i], j);
-
+#endif
             if(matrix.sM[1+i][j]==0) matrix.sM[1+i][j]=1;
             else matrix.sM[1+i][j]=0;
             valZ = valZ / pZ;
@@ -105,8 +112,9 @@ void linear_algebra(GNFS::Polynomial &polynomial, GNFS::Target &target,
                numZ = fb.AFBr[i];
             }
 
+#ifdef LANCZOS      
             if(matrix.sM[1+target.t+i][j]==0) insert_col_entry(&M[1+target.t+i], j);
-
+#endif
             if(matrix.sM[1+target.t+i][j]==0) matrix.sM[1+target.t+i][j]=1;
             else matrix.sM[1+target.t+i][j]=0;
 
@@ -126,13 +134,32 @@ void linear_algebra(GNFS::Polynomial &polynomial, GNFS::Target &target,
          {
             matrix.sM[1+target.t+u+i][j]=1;
          
+#ifdef LANCZOS      
             insert_col_entry(&M[1+target.t+u+i], j);
+#endif
          }
       }
    }
    
    std::cout << "\tSize: " << matrix.sM.NumRows() << "x" << matrix.sM.NumCols() << std::endl;
 
+#ifdef LANCZOS      
+   std::cout << matrix.sM << std::endl;
+
+   for(unsigned int i=0; i<ncols; i++)
+   {
+      for(unsigned int j=0; j<nrows; j++)
+      {
+         int found=0;
+         for(unsigned int w=0; w<M[i].weight; w++)
+            if(M[i].data[w]==j) { found=1; break; }
+           
+         if(found) std::cout << "1 ";
+         else std::cout << "0 ";
+      }
+      std::cout << std::endl;
+   }
+#endif
 
    /*
    uint64_t *nullrows;
@@ -156,7 +183,7 @@ void linear_algebra(GNFS::Polynomial &polynomial, GNFS::Target &target,
    */
 
 
-   /*
+#ifdef LANCZOS      
    std::cout << "Reduce matrix " << nrows << "x" << ncols << " ..." << std::endl;
    reduce_matrix(extra_rels, &nrows, &ncols, M);
  
@@ -165,22 +192,43 @@ void linear_algebra(GNFS::Polynomial &polynomial, GNFS::Target &target,
    do
    {                                                                            
       nullrows = block_lanczos(nrows, 0, ncols, M);        
-   } while (nullrows == NULL && cnt++<1000);
-   */
+   } while (nullrows == NULL /*&& cnt++<1000*/);
+   
 
-   /*
+   puts("\nNULL SPACES");
    for(uint32_t i=0; i<nrows; i++)
    {
       for(uint32_t j=0; j<ncols; j++)
       {
          if(get_null_entry(nullrows, i, j))
-            printf("1");
+            printf("1 ");
          else
-            printf("0");
+            printf("0 ");
       }
       puts("");
    }
-   */
+
+   uint64_t mask;                                                                
+
+   for (i = 0, mask = 0; i < ncols; i++) /* create mask of nullspace vectors */ 
+      mask |= nullrows[i];                                                     
+
+   int count;                                                                                
+   for (i = count = 0; i < 64; i++) /* count nullspace vectors found */         
+   {                                                                            
+      if (mask & ((uint64_t)(1) << i))                                          
+         count++;                                                               
+   }   
+
+   for (count = 0; count < 64; count++)                                         
+   {                                                                            
+      if (mask & ((uint64_t)(1) << count))                                     
+      { 
+         //printf("count: %d\n", count);                                                                       
+      }                                                                        
+   }     
+
+#endif
 
 
    bool stop;
@@ -228,6 +276,37 @@ void linear_algebra(GNFS::Polynomial &polynomial, GNFS::Target &target,
       }
    }
    
+
+#ifdef LANCZOS      
+   std::cout << matrix.sfreeCols << std::endl;
+ 
+   //NTL::kernel(matrix.sM, matrix.sM);
+   //NTL::gauss(matrix.sM);
+   //std::cout << matrix.sM << std::endl;  
+   /*
+   for(uint32_t i=0; i<nrows; i++)
+   {
+      int cnt_ones=0;
+      for(uint32_t j=0; j<ncols; j++)
+      {
+         if(get_null_entry(nullrows, i, j))
+         {
+            matrix.sfreeCols[j]=1;
+            cnt_ones++;
+         }
+         else
+         {
+            matrix.sfreeCols[j]=0;
+         }
+      }
+      
+      if(cnt_ones>0) break;
+   }
+
+
+   std::cout << matrix.sfreeCols << std::endl;
+   */
+#endif
 
 }
 // }}}

@@ -1,36 +1,43 @@
-/*============================================================================
-    Copyright 2006 Jason Papadopoulos.    
-    Copyright 2006, 2011 William Hart.
+/*
+   Copyright 2006 Jason Papadopoulos.    
+   Copyright 2006, 2011 William Hart.
+   Copyright 2015 Daniel Lerch Hostalot.
 
-    This file is part of FLINT.
+   This file is part of FactorLib.
 
-    FLINT is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+   FactorLib is free software; you can redistribute it and/or modify                
+   it under the terms of the GNU General Public License as published by         
+   the Free Software Foundation; either version 2 of the License, or            
+   (at your option) any later version.                                          
+                                                                                
+   FLINT is distributed in the hope that it will be useful,                     
+   but WITHOUT ANY WARRANTY; without even the implied warranty of               
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                
+   GNU General Public License for more details.                                 
+                                                                                
+   You should have received a copy of the GNU General Public License            
+   along with FLINT; if not, write to the Free Software                         
+   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA 
+*/
 
-    FLINT is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+/*
+   Note from msieve code:
+   =====================
+   Optionally, please be nice and tell me if you find this source to be
+   useful. Again optionally, if you add to the functionality present here
+   please consider making those additions public too, so that others may 
+   benefit from your work.	
+                        --jasonp@boo.net 9/8/06
+    
 
-    You should have received a copy of the GNU General Public License
-    along with FLINT; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
+   Note from FLINT code:                    
+   =====================
 
-===============================================================================
-
-Optionally, please be nice and tell me if you find this source to be
-useful. Again optionally, if you add to the functionality present here
-please consider making those additions public too, so that others may 
-benefit from your work.	
-       				   --jasonp@boo.net 9/8/06
-       				   
-The following modifications were made by William Hart:
-    -added the utility function get_null_entry
-    -reformatted original code so it would operate as a standalone 
-     filter and block Lanczos module
---------------------------------------------------------------------*/
+   The following modifications were made by William Hart:
+       -added the utility function get_null_entry
+       -reformatted original code so it would operate as a standalone 
+        filter and block Lanczos module
+*/
 
 #include <string.h>
 #include <stdlib.h>

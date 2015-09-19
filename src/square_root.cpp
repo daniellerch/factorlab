@@ -249,6 +249,7 @@ void square_root(GNFS::Polynomial &polynomial, GNFS::Target &target, Matrix &mat
       }
       matrix.sdependent[number] = true;
 
+      //std::cout << matrix.sdependent << std::endl;
 
       // Calculate y
       int *RFBvec;
@@ -285,7 +286,7 @@ void square_root(GNFS::Polynomial &polynomial, GNFS::Target &target, Matrix &mat
       // s(m) * f'(m)
 
       ZZ dF_temp = dF(polynomial.f, polynomial.m);
-      std::cout << dF_temp << std::endl;
+      //std::cout << dF_temp << std::endl;
 
       /*
       ZZ dF_temp2 = FL::ZZX_evaluate(polynomial.f, polynomial.m);
