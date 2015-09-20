@@ -10,12 +10,12 @@ OBJS =   src/NTL_extension.o \
          src/pollard_pm1.o \
          src/quadratic_sieve.o \
          \
-         src/block_lanczos.cpp \
+         src/block_lanczos.o \
          src/polynomial_selection.o \
          src/sieve.o \
          src/linear_algebra.o \
          src/square_root.o \
-         
+    
 
 default: $(OBJS)
 	$(CC) $(HDRS) $(OBJS) src/quadratic_sieve_main.cpp -o bin/factor_quadratic_sieve $(LIB)
@@ -25,9 +25,9 @@ default: $(OBJS)
 	$(CC) $(HDRS) $(OBJS) src/n_gen_main.cpp -o bin/n_gen $(LIB)
 	$(CC) $(HDRS) $(OBJS) src/prime_gen_main.cpp -o bin/prime_gen $(LIB)
 
-
 %.o: %.cpp
 	$(CC) $(HDRS) -c $< -o $@
 
 clean:
 	rm -f src/*.o bin/*
+
