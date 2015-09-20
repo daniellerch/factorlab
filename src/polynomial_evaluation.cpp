@@ -19,12 +19,6 @@
 */
 
 
-/*
-   Pollard P-1 Factorization method.
-
-   Algorithm 5.4.1 in "Prime Numbers, a Computational Perspective", 2ed. 
-   R. Crandall, C. Pomerance.
-*/
 
 #include <vector>
 #include <factorlib.hpp>

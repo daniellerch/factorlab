@@ -3,37 +3,36 @@ CC = g++ -std=gnu++11 -Wall
 LIB = -lntl
 HDRS = -I src
 
-OBJS =   src/NTL_extension.o \
+OBJS =   NTL_extension.o \
          \
-         src/polynomial_evaluation.o \
-         src/pollard_rho.o \
-         src/pollard_rho_ppa.o \
-         src/pollard_pm1.o \
-         src/quadratic_sieve.o \
+         polynomial_evaluation.o \
+         pollard_rho.o \
+         pollard_rho_ppa.o \
+         pollard_pm1.o \
+         quadratic_sieve.o \
          \
-         src/block_lanczos.cpp \
-         src/polynomial_selection.o \
-         src/sieve.o \
-         src/linear_algebra.o \
-         src/square_root.o \
-         
+         block_lanczos.o \
+         polynomial_selection.o \
+         sieve.o \
+         linear_algebra.o \
+         square_root.o \
+    
+BUILD = $(addprefix build/,$(OBJS))    
 
-default: $(OBJS)
-	$(CC) $(HDRS) $(OBJS) src/quadratic_sieve_main.cpp -o bin/factor_quadratic_sieve $(LIB)
-	$(CC) $(HDRS) $(OBJS) src/polynomial_evaluation_main.cpp -o bin/factor_polynomial_evaluation $(LIB)
-	$(CC) $(HDRS) $(OBJS) src/pollard_pm1_main.cpp -o bin/factor_pollard_pm1 $(LIB)
-	$(CC) $(HDRS) $(OBJS) src/pollard_rho_main.cpp -o bin/factor_pollard_rho $(LIB)
-	#$(CC) $(HDRS) $(OBJS) src/pollard_rho_ppa_main.cpp -o bin/factor_pollard_rho_ppa $(LIB)
-	$(CC) $(HDRS) $(OBJS) src/gnfs.cpp -lntl -o bin/factor_gnfs $(LIB)
-	$(CC) $(HDRS) src/prime_gen.cpp -o bin/primegen $(LIB)
-	$(CC) $(HDRS) src/n_gen.cpp -o bin/ngen $(LIB)
+default: $(addprefix src/,$(OBJS))
+	$(CC) $(HDRS) $(BUILD) src/quadratic_sieve_main.cpp -o bin/factor_quadratic_sieve $(LIB)
+	$(CC) $(HDRS) $(BUILD) src/polynomial_evaluation_main.cpp -o bin/factor_polynomial_evaluation $(LIB)
+	$(CC) $(HDRS) $(BUILD) src/pollard_pm1_main.cpp -o bin/factor_pollard_pm1 $(LIB)
+	$(CC) $(HDRS) $(BUILD) src/pollard_rho_main.cpp -o bin/factor_pollard_rho $(LIB)
+	$(CC) $(HDRS) $(BUILD) src/n_gen_main.cpp -o bin/n_gen $(LIB)
+	$(CC) $(HDRS) $(BUILD) src/prime_gen_main.cpp -o bin/prime_gen $(LIB)
+	#$(CC) $(HDRS) $(BUILD)) src/pollard_rho_ppa_main.cpp -o bin/factor_pollard_rho_ppa $(LIB)
+	$(CC) $(HDRS) $(BUILD) src/gnfs.cpp -lntl -o bin/factor_gnfs $(LIB)
 
 
 %.o: %.cpp
-	$(CC) $(HDRS) -c $< -o $@
+	$(CC) $(HDRS) -c $(subst build,src,$<) -o $(subst src,build,$@)
 
 clean:
-	rm -f src/*.o
-	rm -f primegen
-	rm -f factor_gnfs
-	rm -f ngen
+	rm -f build/*.o bin/*
+
