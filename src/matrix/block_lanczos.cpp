@@ -42,7 +42,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <block_lanczos.hpp>
+#include <matrix/block_lanczos.hpp>
 
 #define BIT(x) (((uint64_t)(1)) << (x))
 

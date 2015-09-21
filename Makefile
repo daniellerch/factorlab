@@ -10,7 +10,11 @@ OBJS =   src/NTL_extension.o \
          src/pollard_pm1.o \
          src/quadratic_sieve.o \
          \
-         src/block_lanczos.o \
+         src/matrix/SGauss.o \
+         src/matrix/mat_long.o \
+         src/matrix/svector.o \
+         src/matrix/smatrix.o \
+         src/matrix/block_lanczos.o \
          src/polynomial_selection.o \
          src/sieve.o \
          src/linear_algebra.o \
@@ -18,10 +22,17 @@ OBJS =   src/NTL_extension.o \
     
 
 default: $(OBJS)
+	# -------------------------
+	# Factorization Algorithms 
+	# -------------------------
 	$(CC) $(HDRS) $(OBJS) src/quadratic_sieve_main.cpp -o bin/factor_quadratic_sieve $(LIB)
 	$(CC) $(HDRS) $(OBJS) src/polynomial_evaluation_main.cpp -o bin/factor_polynomial_evaluation $(LIB)
 	$(CC) $(HDRS) $(OBJS) src/pollard_pm1_main.cpp -o bin/factor_pollard_pm1 $(LIB)
 	$(CC) $(HDRS) $(OBJS) src/pollard_rho_main.cpp -o bin/factor_pollard_rho $(LIB)
+	$(CC) $(HDRS) $(OBJS) src/gnfs_main.cpp -o bin/factor_gnfs $(LIB)
+	# -------------------------
+	# Tools
+	# -------------------------
 	$(CC) $(HDRS) $(OBJS) src/n_gen_main.cpp -o bin/n_gen $(LIB)
 	$(CC) $(HDRS) $(OBJS) src/prime_gen_main.cpp -o bin/prime_gen $(LIB)
 
@@ -29,5 +40,5 @@ default: $(OBJS)
 	$(CC) $(HDRS) -c $< -o $@
 
 clean:
-	rm -f src/*.o bin/*
+	rm -f src/*.o src/*/*.o bin/*
 

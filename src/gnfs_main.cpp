@@ -104,8 +104,8 @@ int main(int argc, char *argv[])
 
 
    target.digits = (int)(log(target.n) / log(10)) + 1;
-   //int div=5;
    int div=1;
+   //int div=1;
    target.t = calc_U(target.n, polynomial.d)/div;
    target.C = calc_B(target.n)/div;
    

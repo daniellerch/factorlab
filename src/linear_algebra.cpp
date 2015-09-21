@@ -1,6 +1,9 @@
 
 #include <sieve.hpp>
-#include <block_lanczos.hpp>
+#include <matrix/block_lanczos.hpp>
+#include <matrix/smatrix.h>
+#include <matrix/smat_long.h>
+
 #include <linear_algebra.hpp>
 
 #include <NTL/GF2.h>
@@ -43,6 +46,7 @@ void linear_algebra(GNFS::Polynomial &polynomial, GNFS::Target &target,
 
 //#define LANCZOS 
 #ifdef LANCZOS
+   /*
    uint64_t *nullrows;
    uint32_t extra_rels = 0; // number of opportunities to factor n 
    uint32_t ncols, nrows;
@@ -52,7 +56,10 @@ void linear_algebra(GNFS::Polynomial &polynomial, GNFS::Target &target,
 
    printf("=>%u\n", nrows);
    la_col_t *M = create_matrix(nrows);
-
+   */
+   
+   NTL::smat_long Aorig;
+   Aorig.SetDims(matrix.row, matrix.col);
 #endif
 
    // Initialize sM
@@ -72,7 +79,8 @@ void linear_algebra(GNFS::Polynomial &polynomial, GNFS::Target &target,
          matrix.sM[0][j] = 1;
       
 #ifdef LANCZOS      
-         insert_col_entry(&M[0], j);
+         //insert_col_entry(&M[0], j);
+         Aorig[0][j]=1;
 #endif
       }
 
@@ -84,7 +92,8 @@ void linear_algebra(GNFS::Polynomial &polynomial, GNFS::Target &target,
          if(valZ % pZ == 0)
          {
 #ifdef LANCZOS      
-            if(matrix.sM[1+i][j]==0) insert_col_entry(&M[1+i], j);
+            //if(matrix.sM[1+i][j]==0) insert_col_entry(&M[1+i], j);
+            if(matrix.sM[1+i][j]==0) Aorig[1+i][j]=1;
 #endif
             if(matrix.sM[1+i][j]==0) matrix.sM[1+i][j]=1;
             else matrix.sM[1+i][j]=0;
@@ -113,7 +122,8 @@ void linear_algebra(GNFS::Polynomial &polynomial, GNFS::Target &target,
             }
 
 #ifdef LANCZOS      
-            if(matrix.sM[1+target.t+i][j]==0) insert_col_entry(&M[1+target.t+i], j);
+            //if(matrix.sM[1+target.t+i][j]==0) insert_col_entry(&M[1+target.t+i], j);
+            if(matrix.sM[1+target.t+i][j]==0) Aorig[1+target.t+i][j]=1;
 #endif
             if(matrix.sM[1+target.t+i][j]==0) matrix.sM[1+target.t+i][j]=1;
             else matrix.sM[1+target.t+i][j]=0;
@@ -135,7 +145,8 @@ void linear_algebra(GNFS::Polynomial &polynomial, GNFS::Target &target,
             matrix.sM[1+target.t+u+i][j]=1;
          
 #ifdef LANCZOS      
-            insert_col_entry(&M[1+target.t+u+i], j);
+            //insert_col_entry(&M[1+target.t+u+i], j);
+            Aorig[1+target.t+u+i][j]=1;
 #endif
          }
       }
@@ -144,8 +155,18 @@ void linear_algebra(GNFS::Polynomial &polynomial, GNFS::Target &target,
    std::cout << "\tSize: " << matrix.sM.NumRows() << "x" << matrix.sM.NumCols() << std::endl;
 
 #ifdef LANCZOS      
+   std::cout << "OLD MATRIX" << std::endl;
    std::cout << matrix.sM << std::endl;
 
+   std::cout << "LANCZOS C++ MATRIX" << std::endl;
+   for(unsigned int i=0; i<matrix.row; i++)
+   {
+      for(unsigned int j=0; j<matrix.col; j++)
+         std::cout << Aorig[i][j] << " ";
+      std::cout << std::endl;
+   }
+
+   /*
    for(unsigned int i=0; i<ncols; i++)
    {
       for(unsigned int j=0; j<nrows; j++)
@@ -159,6 +180,8 @@ void linear_algebra(GNFS::Polynomial &polynomial, GNFS::Target &target,
       }
       std::cout << std::endl;
    }
+   */
+
 #endif
 
    /*
@@ -184,17 +207,47 @@ void linear_algebra(GNFS::Polynomial &polynomial, GNFS::Target &target,
 
 
 #ifdef LANCZOS      
-   std::cout << "Reduce matrix " << nrows << "x" << ncols << " ..." << std::endl;
-   reduce_matrix(extra_rels, &nrows, &ncols, M);
+
+   NTL::ZZ p = NTL::to_ZZ(2);
+   NTL::ZZ_p::init(p);
+   NTL::vec_long cols;
+   NTL::smat_long A;                                                                   
+   NTL::vec_ZZ_p y; 
+   NTL::vec_ZZ_p yorig;                                                                
+   yorig.SetLength(Aorig.NumRows()); 
+   //for (long i=0; i<Aorig.NumRows(); ++i)
+   //   yorig[i]=0;
+
+   // Find smaller Aorig*x=yorig
+   SGauss(A,y,cols,Aorig,yorig); 
+
+   std::cout << "LANCZOS C++ MATRIX (s-gauss)" << std::endl;
+   for(unsigned int i=0; i<A.NumRows(); i++)
+   {
+      for(unsigned int j=0; j<A.NumCols(); j++)
+         std::cout << A[i][j] << " ";
+      std::cout << std::endl;
+   }
+
+   // the solution                                                                
+   std::cout << "Lanczos ... " << std::endl;
+   NTL::vec_ZZ_p X;
+   if(!Lanczos(A,X,y))
+      std::cout << "Lanczos ERROR!" << std::endl;  
+
+
+   //std::cout << "Reduce matrix " << nrows << "x" << ncols << " ..." << std::endl;
+   //reduce_matrix(extra_rels, &nrows, &ncols, M);
  
-   std::cout << "Block lanczos ..." << std::endl;
-   int cnt=0;
-   do
-   {                                                                            
-      nullrows = block_lanczos(nrows, 0, ncols, M);        
-   } while (nullrows == NULL /*&& cnt++<1000*/);
+   //std::cout << "Block lanczos ..." << std::endl;
+   //int cnt=0;
+   //do
+   //{                                                                            
+   //   nullrows = block_lanczos(nrows, 0, ncols, M);        
+   //} while (nullrows == NULL /*&& cnt++<1000*/);
    
 
+   /*
    puts("\nNULL SPACES");
    for(uint32_t i=0; i<nrows; i++)
    {
@@ -210,11 +263,11 @@ void linear_algebra(GNFS::Polynomial &polynomial, GNFS::Target &target,
 
    uint64_t mask;                                                                
 
-   for (i = 0, mask = 0; i < ncols; i++) /* create mask of nullspace vectors */ 
+   for (i = 0, mask = 0; i < (long)ncols; i++) // create mask of nullspace vectors 
       mask |= nullrows[i];                                                     
 
    int count;                                                                                
-   for (i = count = 0; i < 64; i++) /* count nullspace vectors found */         
+   for (i = count = 0; i < 64; i++) / count nullspace vectors found 
    {                                                                            
       if (mask & ((uint64_t)(1) << i))                                          
          count++;                                                               
@@ -228,9 +281,22 @@ void linear_algebra(GNFS::Polynomial &polynomial, GNFS::Target &target,
       }                                                                        
    }     
 
+   NTL::mat_GF2 tmp1 = matrix.sM;
+   NTL::gauss(tmp1);
+   std::cout << "NTL gauss: " << std::endl << tmp1 << std::endl;
+
+   NTL::mat_GF2 tmp2 = matrix.sM;
+   NTL::kernel(tmp2, tmp2);
+   std::cout << "NTL kernel: " << std::endl << tmp2 << std::endl;
+
+   NTL::mat_GF2 tmp3 = matrix.sM;
+   NTL::image(tmp3, tmp3);
+   std::cout << "NTL image: " << std::endl << tmp3 << std::endl;
+   */
+
 #endif
 
-
+   
    bool stop;
 
    // Solve Mx = 0
@@ -278,6 +344,8 @@ void linear_algebra(GNFS::Polynomial &polynomial, GNFS::Target &target,
    
 
 #ifdef LANCZOS      
+   std::cout << "OLD MATRIX RESULTS" << std::endl; 
+   std::cout << matrix.sM << std::endl;
    std::cout << matrix.sfreeCols << std::endl;
  
    //NTL::kernel(matrix.sM, matrix.sM);
