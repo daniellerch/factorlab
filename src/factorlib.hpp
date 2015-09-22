@@ -16,6 +16,7 @@ namespace FL
    NTL::ZZ pollard_pm1(NTL::ZZ &n, NTL::ZZ &B);
    NTL::ZZ pollard_rho_ppa(NTL::ZZ &n, NTL::ZZ &k, NTL::ZZ &a);
    NTL::ZZ quadratic_sieve(NTL::ZZ &n);
+   NTL::ZZ ecm(NTL::ZZ &n);
 
 
    /* NTL extension */
