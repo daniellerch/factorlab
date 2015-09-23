@@ -3,8 +3,8 @@
 
    This file is part of FactorLib.
 
-   FactorLib is free software; you can redistribute it and/or modify                
-   it under the terms of the GNU General Public License as published by         
+   FactorLib is free software; you can redistribute it and/or modify 
+   it under the terms of the GNU General Public License as published by    
    the Free Software Foundation; either version 2 of the License, or            
    (at your option) any later version.                                          
                                                                                 
@@ -67,6 +67,7 @@ void ECM_parameters(long& B1, long& B2, double& prob, long& D,
 } 
 // }}}
 
+// {{{ ECM_stage_one()
 // returns a non-trivial factor q of ZZ_p::modulus(), or 1 otherwise             
 void ECM_stage_one(ZZ& q, EC_p& Q, PrimeSeq& seq, long bound) {
   long sbound = (long)sqrt((double)bound);                                       
@@ -84,7 +85,9 @@ void ECM_stage_one(ZZ& q, EC_p& Q, PrimeSeq& seq, long bound) {
   else                                                                           
     set(q);                                                                      
 }  
+// }}}
 
+// {{{ ECM_stage_two()
 // returns a non-trivial factor q of ZZ_p::modulus(), or 1 otherwise             
 void ECM_stage_two(ZZ& q, EC_p& Q, PrimeSeq& seq, long bound, long D) {          
   long B1 = seq.next();                                                          
@@ -154,8 +157,11 @@ void ECM_stage_two(ZZ& q, EC_p& Q, PrimeSeq& seq, long bound, long D) {
   else                                                                           
     set(q);                                                                      
 }
+// }}}
 
-void ECM_random_curve(EC_pCurve& curve, ZZ_p& X, ZZ_p& Z) {                      
+// {{{ ECM_random_curve()
+void ECM_random_curve(EC_pCurve& curve, ZZ_p& X, ZZ_p& Z) 
+{
   ZZ sigma;                                                                      
   RandomBnd(sigma,ZZ_p::modulus()-6);                                            
   sigma+=6;                                                                      
@@ -187,50 +193,46 @@ void ECM_random_curve(EC_pCurve& curve, ZZ_p& X, ZZ_p& Z) {
   mul(X,u,sqr(u));                                                               
   mul(Z,v,sqr(v));                                                               
 }  
-void ECM_one_curve(ZZ& q, PrimeSeq& seq, long B1, long B2, long D) {             
-  EC_pBak bak;                                                                   
-  bak.save();                                                                    
-                                                                                 
-  // random curve and point                                                      
-  EC_pCurve curve;                                                               
-  ZZ_p X,Z;                                                                      
-  ECM_random_curve(curve,X,Z);                                                   
-  if (IsZero(Z)) {                                                               
-    q=rep(X);                                                                    
-    return;                                                                      
-  }                                                                              
-  EC_p::init(curve);                                                             
-                                                                                 
-  // initial point                                                               
-  EC_p Q;                                                                        
-  Q.X = X;                                                                       
-  Q.Z = Z;                                                                       
-                                                                                 
-  // attempt to factor                                                           
-  ECM_stage_one(q,Q,seq,B1);                                                     
-  if (IsOne(q)&&!IsZero(Q))                                                      
-    ECM_stage_two(q,Q,seq,B2,D);                                                 
-}  
-
-
-
+// }}}
 
 // {{{ FL::ecm()
 NTL::ZZ FL::ecm(NTL::ZZ &n)
 {
-   NTL::ZZ B = NTL::to_ZZ(10000000);
+   NTL::ZZ B = NTL::SqrRoot(n);
 
    long B1,B2,D;                                                                  
    double prob;                                                                   
    ECM_parameters(B1, B2, prob, D, NTL::NumBits(B), NTL::NumBits(n)); 
+   std::cout << "Prob: " << prob << std::endl;
 
    NTL::ZZ_p::init(n);
 
    NTL::PrimeSeq seq;                                                                  
 
-   for (long i=0; i<100; ++i) 
+   for (long i=0; ; ++i) 
    {
-      ECM_one_curve(n, seq, B1, B2, D);                                                
+      std::cout << "try " << i << " B: " << B1 << ", " << B2 << "\r";
+      std::flush(std::cout);
+
+      // random curve and point                                                      
+      EC_pCurve curve;                                                               
+      ZZ_p X,Z;                                                                      
+      ECM_random_curve(curve,X,Z);                                                   
+      if (IsZero(Z)) 
+         continue;                                                                      
+
+      EC_p::init(curve);                                                             
+
+      // initial point                                                               
+      EC_p Q;                                                                        
+      Q.X = X;                                                                       
+      Q.Z = Z;                                                                       
+
+      // attempt to factor                                                           
+      ECM_stage_one(n, Q, seq, B1);                                                     
+      if (IsOne(n)&&!IsZero(Q))                                                      
+         ECM_stage_two(n, Q, seq, B2, D);                                                 
+
       if (!NTL::IsOne(n)) 
       {  
          std::cout << "factor:" << n << std::endl;
@@ -238,11 +240,7 @@ NTL::ZZ FL::ecm(NTL::ZZ &n)
       }                                                                            
    } 
                                                                              
-   // TODO
-
-   std::cout << "Warning: not implemented!" << std::endl;
    return n;   
 }
 // }}}
-
 

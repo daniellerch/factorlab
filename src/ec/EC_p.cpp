@@ -829,4 +829,5 @@ void mul(EC_p& x, const EC_p& a, long n) {
   swap(x,result);
 }
 
+
 NTL_END_IMPL;

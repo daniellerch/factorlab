@@ -10,6 +10,7 @@ OBJS =   src/NTL_extension.o \
          src/pollard_pm1.o \
          src/quadratic_sieve.o \
          src/ecm.o \
+         src/ec_rho.o \
          \
          src/ec/EC_p.o \
          src/ec/pair_ZZ_long.o \
@@ -28,6 +29,7 @@ default: $(OBJS)
 	# -------------------------
 	# Factorization Algorithms 
 	# -------------------------
+	$(CC) $(HDRS) $(OBJS) src/ec_rho_main.cpp -o bin/factor_ec_rho $(LIB)
 	$(CC) $(HDRS) $(OBJS) src/ecm_main.cpp -o bin/factor_ecm $(LIB)
 	$(CC) $(HDRS) $(OBJS) src/quadratic_sieve_main.cpp -o bin/factor_quadratic_sieve $(LIB)
 	$(CC) $(HDRS) $(OBJS) src/polynomial_evaluation_main.cpp -o bin/factor_polynomial_evaluation $(LIB)

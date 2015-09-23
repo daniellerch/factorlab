@@ -88,9 +88,9 @@ int main(int argc, char *argv[])
 	GNFS::Target target;
 
 
-   if(argc != 3)
+   if(argc != 2)
    {
-      cout << "Usage: gnfs [N] [primes] " << endl;
+      cout << "Usage: gnfs [N] " << endl;
       exit(1);
    }
 
@@ -156,15 +156,15 @@ int main(int argc, char *argv[])
    FactorBase fb;
 
    // Crea la "Rational Factor Base"
-   fb.make_RFB(polynomial, target, argv[2]);
+   fb.make_RFB(polynomial, target);
    std::cout << "\tRFB: " << fb.RFB.size() << " elements" << std::endl;
 
    // Crea la "Algebraic Factor Base"
-   fb.make_AFB(polynomial, target, argv[2]);
+   fb.make_AFB(polynomial, target);
    std::cout << "\tAFB: " << fb.AFB.size() << " elements" << std::endl;
 
    // Crea la "Quadratic Factor Base"
-   fb.make_QFB(target, polynomial, fb.AFB[fb.AFB.size()-1], argv[2]);
+   fb.make_QFB(target, polynomial, fb.AFB[fb.AFB.size()-1]);
    std::cout << "\tQCB: " << fb.QCB.size() << " elements" << std::endl;
 
    v = target.digits;

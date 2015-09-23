@@ -45,21 +45,17 @@ double prime_logarithm(std::vector <int> &FB, int bound, int p, NTL::ZZ n)
 // }}}
 
    // {{{ make_RFB()
-   void make_RFB(GNFS::Polynomial &polynomial, GNFS::Target &target, const char *primes)
+   void make_RFB(GNFS::Polynomial &polynomial, GNFS::Target &target)
    {
-      std::ifstream fin(primes);
 		int bound = target.t;
-		//int ext = bound/2;
 		int ext = 0;
-
-      std::cout << "-->" << bound << std::endl;
+      long p=0;
 
       for(int i = 0; i < bound; i++)
       {
-         int p;
+         p = NTL::NextPrime(p+1);
 			double l;
 
-         fin >> p;
 			l = p;
          RFB.push_back(p);
          RFBm.push_back(polynomial.m % p);
@@ -71,26 +67,23 @@ double prime_logarithm(std::vector <int> &FB, int bound, int p, NTL::ZZ n)
 
          RFBlog.push_back(l);
       }
-      fin.close();
    }
    // }}}
 
     // {{{ make_AFB()
-   void make_AFB(GNFS::Polynomial &polynomial, GNFS::Target &target, const char *primes)
+   void make_AFB(GNFS::Polynomial &polynomial, GNFS::Target &target)
    {
       int u = 0;
-      int p;
+      long p=0;
 		double l;
 		int bound = target.t;
-		//int ext = (d*bound)/2;
 		int ext = 0;
 
-      std::ifstream fin(primes);
       NTL::ZZ jZ, pZ;
 
       while(u < polynomial.d * bound)
       {
-         fin >> p;
+         p = NTL::NextPrime(p+1);
          pZ = p;
          int count = 0;
 
@@ -113,14 +106,12 @@ double prime_logarithm(std::vector <int> &FB, int bound, int p, NTL::ZZ n)
             }
          }
       }
-      fin.close();
    }
 
    // }}}
 
    // {{{ make_QFB()
-   void make_QFB(GNFS::Target &target, GNFS::Polynomial &polynomial, int lastp, 
-         const char *primes)
+   void make_QFB(GNFS::Target &target, GNFS::Polynomial &polynomial, int lastp)
    {
       int p = lastp;
       int v = 0;
