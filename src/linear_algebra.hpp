@@ -4,13 +4,16 @@
 
 #include <gnfs.hpp>
 #include <factor_base.hpp>
+#include <matrix/smat_long.h>
 
 class Matrix
 {
    public:
-   NTL::mat_GF2 sM;
-   NTL::vec_GF2 sdependent;
-   NTL::vec_GF2 sfreeCols;
+   NTL::smat_long sM;
+   //NTL::mat_GF2 sM;
+   NTL::svec_long sdependent;
+   //NTL::vec_GF2 sfreeCols;
+   NTL::svec_long sfreeCols;
    int col;
    int row;
 
