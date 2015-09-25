@@ -69,9 +69,6 @@ calc_U(NTL::ZZ & n, int d)
 // ----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
-   using namespace std;
-   using namespace NTL;
-
    NTL::ZZ seed = NTL::to_ZZ(time(NULL));
    NTL::SetSeed(seed);
 
@@ -90,7 +87,7 @@ int main(int argc, char *argv[])
 
    if(argc != 2)
    {
-      cout << "Usage: gnfs [N] " << endl;
+      std::cout << "Usage: " << argv[0] << " [N] " << std::endl << std::endl;;
       exit(1);
    }
 
@@ -234,8 +231,8 @@ int main(int argc, char *argv[])
    std::cout << "\tFactors: " << std::endl;
    std::cout << line << std::endl;
 
-   cout << "\tfactor: " <<  GCD(xZ-yZ, target.n) << endl;
-   cout << "\tfactor: " << GCD(xZ+yZ, target.n) << endl;
+   std::cout << "\tfactor: " << NTL::GCD(xZ-yZ, target.n) << std::endl;
+   std::cout << "\tfactor: " << NTL::GCD(xZ+yZ, target.n) << std::endl;
    std::cout << std::endl;
 
    return (EXIT_SUCCESS);

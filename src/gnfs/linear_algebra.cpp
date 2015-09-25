@@ -109,9 +109,13 @@ int Legendre(NTL::ZZ & y, NTL::ZZ & z)
 // }}}
 
 // {{{ linear_algebra()
-void linear_algebra(GNFS::Polynomial &polynomial, GNFS::Target &target, 
-	FactorBase &fb, Matrix &matrix, 
-    const std::vector<int> &av, const std::vector<int> &bv)
+void linear_algebra(
+   GNFS::Polynomial &polynomial, 
+   GNFS::Target &target, 
+	FactorBase &fb, 
+   Matrix &matrix, 
+   const std::vector<int> &av, 
+   const std::vector<int> &bv)
 {
 
    NTL::ZZ aZ;
@@ -126,10 +130,10 @@ void linear_algebra(GNFS::Polynomial &polynomial, GNFS::Target &target,
 
 
    // Initialize sM
-   for(j = 0; j <= matrix.row-1; j++)
+   for(j = 0; j <= matrix.sM.NumCols()-1; j++)
    {
       // Initialize row
-      for(k = 0; k < matrix.col-1; k++)
+      for(k = 0; k < matrix.sM.NumCols()-1; k++)
          matrix.sM[k][j] = 0;
       
       // Set the first column
@@ -201,7 +205,7 @@ void linear_algebra(GNFS::Polynomial &polynomial, GNFS::Target &target,
    std::cout << "\tSize: " << matrix.sM.NumRows() << "x" << matrix.sM.NumCols() << std::endl;
 
    my_gauss(matrix.sM);
-   matrix.sfreeCols=get_freecols(matrix.sM);
+   matrix.sfreeCols = get_freecols(matrix.sM);
 
 }
 // }}}

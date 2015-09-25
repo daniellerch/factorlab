@@ -14,13 +14,9 @@ class Matrix
    NTL::svec_long sdependent;
    //NTL::vec_GF2 sfreeCols;
    NTL::svec_long sfreeCols;
-   int col;
-   int row;
 
    Matrix(int col, int row)
    {
-      this->col = col;
-      this->row = row;
 		sM.SetDims(col, row);  
       sdependent.SetLength(row);
       sfreeCols.SetLength(row);
