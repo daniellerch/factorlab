@@ -12,8 +12,8 @@ OBJS =   src/NTL_extension.o \
          src/ecm.o \
          src/ec_rho.o \
          \
-         src/ec/EC_p.o \
-         src/ec/pair_ZZ_long.o \
+         src/curves/EC_p.o \
+         src/curves/pair_ZZ_long.o \
          src/matrix/SGauss.o \
          src/matrix/mat_long.o \
          src/matrix/svector.o \
