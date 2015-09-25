@@ -120,7 +120,7 @@ int main(int argc, char *argv[])
 
 
    // ------------------------------------------------------------------------
-   // FASE 1: Seleccion de Polinomio
+   // FASE 1: Polynomial Selection
    // ------------------------------------------------------------------------
    std::cout << std::endl;
    std::cout << line << std::endl;
@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
 
 
    // ------------------------------------------------------------------------
-   // FASE 2: Crea las Bases de Factores
+   // FASE 2: Create Factor Base
    // ------------------------------------------------------------------------
    std::cout << std::endl;
    std::cout << line << std::endl;
@@ -152,15 +152,12 @@ int main(int argc, char *argv[])
 
    FactorBase fb;
 
-   // Crea la "Rational Factor Base"
    fb.make_RFB(polynomial, target);
    std::cout << "\tRFB: " << fb.RFB.size() << " elements" << std::endl;
 
-   // Crea la "Algebraic Factor Base"
    fb.make_AFB(polynomial, target);
    std::cout << "\tAFB: " << fb.AFB.size() << " elements" << std::endl;
 
-   // Crea la "Quadratic Factor Base"
    fb.make_QFB(target, polynomial, fb.AFB[fb.AFB.size()-1]);
    std::cout << "\tQCB: " << fb.QCB.size() << " elements" << std::endl;
 
@@ -172,7 +169,7 @@ int main(int argc, char *argv[])
 
 
    // ------------------------------------------------------------------------
-   // FASE 3: Criba
+   // FASE 3: Sieve
    // ------------------------------------------------------------------------
    std::cout << std::endl;
    std::cout << line << std::endl;
@@ -191,7 +188,7 @@ int main(int argc, char *argv[])
  
 
    // ------------------------------------------------------------------------
-   // FASE 4: Algebra Lineal
+   // FASE 4: Linear Algebra
    // ------------------------------------------------------------------------
    std::cout << std::endl;
    std::cout << line << std::endl;
@@ -207,7 +204,7 @@ int main(int argc, char *argv[])
 
 	
    // ------------------------------------------------------------------------
-   // FASE 5: Raiz Cuadrada
+   // FASE 5: Square Root
    // ------------------------------------------------------------------------
    std::cout << std::endl;
    std::cout << line << std::endl;
@@ -224,7 +221,7 @@ int main(int argc, char *argv[])
 
 
    // ------------------------------------------------------------------------
-   // FASE 6: Factores
+   // FASE 6: Find Factors
    // ------------------------------------------------------------------------
    std::cout << std::endl;
    std::cout << line << std::endl;

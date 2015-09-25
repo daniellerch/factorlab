@@ -36,8 +36,8 @@ NTL::svec_long get_freecols(NTL::smat_long& M)
 }  
 // }}}
 
-// {{{ my_gauss()
-void my_gauss(NTL::smat_long &M)
+// {{{ gaussian_elimination()
+void gaussian_elimination(NTL::smat_long &M)
 {
    long i, j, k;
    bool stop;
@@ -204,7 +204,7 @@ void linear_algebra(
    
    std::cout << "\tSize: " << matrix.sM.NumRows() << "x" << matrix.sM.NumCols() << std::endl;
 
-   my_gauss(matrix.sM);
+   gaussian_elimination(matrix.sM);
    matrix.sfreeCols = get_freecols(matrix.sM);
 
 }
