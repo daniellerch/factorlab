@@ -49,11 +49,11 @@ NTL::ZZ F2(NTL::ZZ &x, NTL::ZZ &n)
 }
 
 
-NTL::ZZ F(NTL::ZZ &x, NTL::ZZ &n)
+NTL::ZZ F(NTL::ZZ &x, NTL::ZZ &n, long begin, long block)
 {
    NTL::ZZ r = NTL::to_ZZ(1);
 
-   for(long i=0; i<100; i++)
+   for(long i=begin; i<begin+block; i++)
       r *= x - i;
 
    return r;
@@ -65,13 +65,16 @@ NTL::ZZ FL::polynomial_evaluation(NTL::ZZ &n)
    NTL::ZZ g; 
    NTL::ZZ x; 
 
+   long block=100;
    unsigned long cnt=0;
+   long i=0;
    for(;;)
    {
       cnt++;
       x = NTL::RandomBnd(n);
-      g = NTL::GCD( F(x, n), n);
-
+      g = NTL::GCD( F(x, n, i, block), n);
+      i+=block;
+   
       if(g>1 && g<n)
          break;
    }

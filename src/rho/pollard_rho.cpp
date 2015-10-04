@@ -59,6 +59,14 @@ NTL::ZZ FL::pollard_rho(NTL::ZZ &n, long k)
       U=s;
       V=s;
 
+      /*
+      int rnd_points=1000;
+      NTL::ZZ Vr[rnd_points];
+      for(int i=0; i<rnd_points; i++)
+         Vr[i]=NTL::RandomBnd(n);
+      */
+
+      //bool found=false;
       for(;;)
       {
          cnt++;
@@ -67,17 +75,29 @@ NTL::ZZ FL::pollard_rho(NTL::ZZ &n, long k)
          U = F(U, a, k, n);
          V = F(V, a, k, n);
          V = F(V, a, k, n);
+ 
+
+         /*
+         for(int i=0; i<rnd_points && !found; i++)
+         {
+            Vr[i] = F(Vr[i], a, k, n);
+            Vr[i] = F(Vr[i], a, k, n);
+            g = NTL::GCD(U-Vr[i], n);
+            if(1<g && g<n)
+            {
+               std::cout << "Factor(" << i << "): " << g << ", it: " << cnt << std::endl;
+               found = true;
+            }
+         }
+         */
+   
          g = NTL::GCD(U-V, n);
-         
-         //std::cout << "U: " << U << std::endl;
-         //std::cout << "V: " << V << std::endl;
-         //std::cout << "GCD: " << g << std::endl;
-         
+
          if(g==1) 
             continue;
          else if(g==n)
             break;
-
+                
          // Success
          std::cout << "Iterations: " << cnt << std::endl;
          return g;

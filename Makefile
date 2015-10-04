@@ -19,13 +19,11 @@ OBJS_GNFS =   src/ntl_ext/NTL_extension.o \
    
 OBJS_POE =  src/poly_eval/polynomial_evaluation.o 
 
-OBJS_RHO =  src/rho/pollard_rho.o 
+OBJS_RHO =  src/rho/pollard_rho.o src/rho/pollard_rho_ppa.o
 
 OBJS_PM1 =  src/pm1/pollard_pm1.o 
 
-OBJS_ECM =  src/ecm/ecm.o \
-            src/curves/EC_p.o \
-            src/curves/pair_ZZ_long.o \
+OBJS_ECM =  src/ecm/ecm.o 
 
 
 OBJS_ECR =  src/ecm/ecm.o \
@@ -46,6 +44,7 @@ default: $(OBJS)
 	$(CC) $(HDRS) $(OBJS_POE) src/poly_eval/polynomial_evaluation_main.cpp -o bin/factor_polynomial_evaluation $(LIB)
 	$(CC) $(HDRS) $(OBJS_PM1) src/pm1/pollard_pm1_main.cpp -o bin/factor_pollard_pm1 $(LIB)
 	$(CC) $(HDRS) $(OBJS_RHO) src/rho/pollard_rho_main.cpp -o bin/factor_pollard_rho $(LIB)
+	$(CC) $(HDRS) $(OBJS_RHO) src/rho/pollard_rho_ppa_main.cpp -o bin/factor_pollard_rho_ppa $(LIB)
 	$(CC) $(HDRS) $(OBJS_GNFS) src/gnfs/gnfs_main.cpp -o bin/factor_gnfs $(LIB)
 	# -------------------------
 	# Tools
