@@ -1,6 +1,6 @@
 
-#ifndef __FACTORLIB_HPP__
-#define __FACTORLIB_HPP__
+#ifndef __FACTORLAB_HPP__
+#define __FACTORLAB_HPP__
 
 #include <NTL/ZZ.h>
 #include <NTL/RR.h>

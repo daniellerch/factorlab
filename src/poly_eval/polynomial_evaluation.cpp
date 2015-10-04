@@ -1,9 +1,9 @@
 /*
    Copyright 2015 Daniel Lerch Hostalot.
 
-   This file is part of FactorLib.
+   This file is part of factorlab.
 
-   FactorLib is free software; you can redistribute it and/or modify                
+   factorlab is free software; you can redistribute it and/or modify                
    it under the terms of the GNU General Public License as published by         
    the Free Software Foundation; either version 2 of the License, or            
    (at your option) any later version.                                          
@@ -21,7 +21,7 @@
 
 
 #include <vector>
-#include <factorlib.hpp>
+#include <factorlab.hpp>
 
 NTL::ZZ F1(NTL::ZZ &x, NTL::ZZ &n)
 {

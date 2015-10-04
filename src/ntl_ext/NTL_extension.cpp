@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <polynomial_selection.hpp>
-#include <factorlib.hpp>
+#include <factorlab.hpp>
 
 
 // {{{ FL::ZZX_is_reducible()

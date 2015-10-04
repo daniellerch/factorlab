@@ -1,6 +1,6 @@
 
 
-#include <factorlib.hpp>
+#include <factorlab.hpp>
 
 int main(int argc, char *argv[])
 {

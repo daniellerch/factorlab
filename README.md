@@ -1,2 +1,2 @@
-# factorlib
+# factorlab
 Integer Factorizacion Experiments

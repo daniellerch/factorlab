@@ -6,7 +6,7 @@
 #include <iostream>
 #include <fstream>
 
-#include <factorlib.hpp>
+#include <factorlab.hpp>
 #include <gnfs.hpp>
 #include <polynomial_selection.hpp>
 
