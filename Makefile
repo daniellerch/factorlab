@@ -25,21 +25,18 @@ OBJS_PM1 =  src/pm1/pollard_pm1.o
 
 OBJS_ECM =  src/ecm/ecm.o 
 
-
-OBJS_ECR =  src/ecm/ecm.o \
-            src/rho/ec_rho.o \
-            src/curves/EC_p.o \
-            src/curves/pair_ZZ_long.o \
+OBJS_ECRHO =  src/ecm/ecrho.o 
 
 OBJS_QS = src/qs/quadratic_sieve.o             
 
-OBJS = $(OBJS_GNFS) $(OBJS_QS) $(OBJS_POE) $(OBJS_RHO) $(OBJS_PM1) $(OBJS_ECM) $(OBJS_ECR)
+OBJS = $(OBJS_GNFS) $(OBJS_QS) $(OBJS_POE) $(OBJS_RHO) $(OBJS_PM1) $(OBJS_ECM) $(OBJS_ECRHO)
 
 default: $(OBJS)
 	# -------------------------
 	# Factorization Algorithms 
 	# -------------------------
 	$(CC) $(HDRS) $(OBJS_ECM) src/ecm/ecm_main.cpp -o bin/factor_ecm $(LIB)
+	$(CC) $(HDRS) $(OBJS_ECRHO) src/ecm/ecrho_main.cpp -o bin/factor_ecrho $(LIB)
 	$(CC) $(HDRS) $(OBJS_QS) src/qs/quadratic_sieve_main.cpp -o bin/factor_quadratic_sieve $(LIB)
 	$(CC) $(HDRS) $(OBJS_POE) src/poly_eval/polynomial_evaluation_main.cpp -o bin/factor_polynomial_evaluation $(LIB)
 	$(CC) $(HDRS) $(OBJS_PM1) src/pm1/pollard_pm1_main.cpp -o bin/factor_pollard_pm1 $(LIB)
@@ -49,7 +46,6 @@ default: $(OBJS)
 	# -------------------------
 	# Tools
 	# -------------------------
-	$(CC) $(HDRS) $(OBJS_ECR) src/tools/ec_rho_main.cpp -o bin/factor_ec_rho $(LIB)
 	$(CC) $(HDRS) src/tools/n_gen_main.cpp -o bin/n_gen $(LIB)
 	$(CC) $(HDRS) src/tools/prime_gen_main.cpp -o bin/prime_gen $(LIB)
 

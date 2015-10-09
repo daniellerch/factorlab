@@ -41,8 +41,7 @@ static void stage_one(NTL::ZZ& q, EC::Point& Q, long B1)
       Q = pa * Q;
    }
 
-
-   if (!is_zero(Q))
+   if (Q.Z!=0)
       NTL::GCD(q, NTL::ZZ_p::modulus(), NTL::rep(Q.Z));
    else
       q=1;
@@ -132,6 +131,9 @@ static EC::Point choose_random_curve_and_get_point(EC::Curve& curve)
    // set(A, B, C)
    curve.set(NTL::to_ZZ_p(1), NTL::to_ZZ_p(0), C);
 
+
+   //std::cout << u << "|" << v << "|" << C << std::endl;
+
    // Initial point
    EC::Point Q(curve);
    Q.X = NTL::power(u, 3);
@@ -166,16 +168,34 @@ NTL::ZZ ecm(NTL::ZZ &n, long B1, long B2)
       EC::Point Q = choose_random_curve_and_get_point(curve);
       if (IsZero(Q.Z))
          continue;
+      std::cout << curves << ": Curve: " << curve << std::endl;
 
-      std::cout << "Curve: " << curve << std::endl;
+      NTL::ZZ m;
+      for(int j=0; j<1; j++)
+      {  // random points per curve
+         std::cout << j << ": Point Q: " << Q << std::endl;   
 
-      stage_one(x, Q, B1);
-      if(1<x && x<n)
-         return x;
+         stage_one(x, Q, B1);
+         if(1<x && x<n) 
+         {  
+            std::cout << "Factor stage one" << std::endl;
+            return x;
+         }
 
-      stage_two(x, Q, B1, B2, D);
-      if(1<x && x<n)
-         return x;
+         stage_two(x, Q, B1, B2, D);
+         if(1<x && x<n)
+         {
+            std::cout << "Factor stage two" << std::endl;
+            return x;
+         }
+
+         // Chose another random point in the curve
+         NTL::RandomBnd(m, NTL::ZZ_p::modulus());
+         Q = m*Q;
+
+         if(Q.Z==0)
+            break;
+      }
    }
 
    return n;
