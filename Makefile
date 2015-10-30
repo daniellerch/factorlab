@@ -29,7 +29,8 @@ OBJS_ECRHO =  src/ecm/ecrho.o
 
 OBJS_QS = src/qs/quadratic_sieve.o             
 
-OBJS = $(OBJS_GNFS) $(OBJS_QS) $(OBJS_POE) $(OBJS_RHO) $(OBJS_PM1) $(OBJS_ECM) $(OBJS_ECRHO)
+#OBJS = $(OBJS_GNFS) $(OBJS_QS) $(OBJS_POE) $(OBJS_RHO) $(OBJS_PM1) $(OBJS_ECM) $(OBJS_ECRHO)
+OBJS = $(OBJS_QS) $(OBJS_POE) $(OBJS_RHO) $(OBJS_PM1) $(OBJS_ECM) $(OBJS_ECRHO)
 
 default: $(OBJS)
 	# -------------------------
@@ -42,7 +43,7 @@ default: $(OBJS)
 	$(CC) $(HDRS) $(OBJS_PM1) src/pm1/pollard_pm1_main.cpp -o bin/factor_pollard_pm1 $(LIB)
 	$(CC) $(HDRS) $(OBJS_RHO) src/rho/pollard_rho_main.cpp -o bin/factor_pollard_rho $(LIB)
 	$(CC) $(HDRS) $(OBJS_RHO) src/rho/pollard_rho_ppa_main.cpp -o bin/factor_pollard_rho_ppa $(LIB)
-	$(CC) $(HDRS) $(OBJS_GNFS) src/gnfs/gnfs_main.cpp -o bin/factor_gnfs $(LIB)
+	#$(CC) $(HDRS) $(OBJS_GNFS) src/gnfs/gnfs_main.cpp -o bin/factor_gnfs $(LIB)
 	# -------------------------
 	# Tools
 	# -------------------------
