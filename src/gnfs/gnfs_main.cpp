@@ -120,7 +120,7 @@ int main(int argc, char *argv[])
 
 
    // ------------------------------------------------------------------------
-   // FASE 1: Polynomial Selection
+   // STEP 1: Polynomial Selection
    // ------------------------------------------------------------------------
    std::cout << std::endl;
    std::cout << line << std::endl;
@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
 
 
    // ------------------------------------------------------------------------
-   // FASE 2: Create Factor Base
+   // STEP 2: Create Factor Base
    // ------------------------------------------------------------------------
    std::cout << std::endl;
    std::cout << line << std::endl;
@@ -169,7 +169,7 @@ int main(int argc, char *argv[])
 
 
    // ------------------------------------------------------------------------
-   // FASE 3: Sieve
+   // STEP 3: Sieve
    // ------------------------------------------------------------------------
    std::cout << std::endl;
    std::cout << line << std::endl;
@@ -188,7 +188,7 @@ int main(int argc, char *argv[])
  
 
    // ------------------------------------------------------------------------
-   // FASE 4: Linear Algebra
+   // STEP 4: Linear Algebra
    // ------------------------------------------------------------------------
    std::cout << std::endl;
    std::cout << line << std::endl;
@@ -204,7 +204,7 @@ int main(int argc, char *argv[])
 
 	
    // ------------------------------------------------------------------------
-   // FASE 5: Square Root
+   // STEP 5: Square Root
    // ------------------------------------------------------------------------
    std::cout << std::endl;
    std::cout << line << std::endl;
@@ -221,7 +221,7 @@ int main(int argc, char *argv[])
 
 
    // ------------------------------------------------------------------------
-   // FASE 6: Find Factors
+   // STEP 6: Find Factors
    // ------------------------------------------------------------------------
    std::cout << std::endl;
    std::cout << line << std::endl;
